@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý phòng hát</title>
+    <link rel="stylesheet" th:href="@{/css/manage_room.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Quản lý phòng hát</h1>
+        <div class="summary">
+            <span>Tổng số phòng hát: <strong th:text="${rooms.size()}"></strong></span>
+        </div>
+    </header>
+
+    <table class="room-table">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Loại</th>
+            <th>Giá ($/h)</th>
+            <th>Số phục vụ tối đa</th>
+            <th>Ghi chú</th>
+            <th>Lựa chọn</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Lặp qua danh sách phòng -->
+        <tr th:each="room, iterStat : ${rooms}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${room.getId()}"></td>
+            <td th:text="${room.getName()}"></td>
+            <td th:text="${room.getType}"></td>
+            <td th:text="${room.getPrice()}"></td>
+            <td th:text="${room.getMaxAttendant()}"></td>
+            <td th:text="${room.getNote()}"></td>
+            <td>
+                <button class="btn edit">Sửa</button>
+                <button class="btn delete">Xóa</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <a th:href="@{/manager-home?back=true}">
+            <button class="btn" id="back">Quay lại</button>
+        </a>
+        <a th:href="@{/add-room}">
+            <button class="btn" id="add-room">Thêm phòng hát</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

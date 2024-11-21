@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Phòng Hát</title>
+    <link rel="stylesheet" th:href="@{/css/add_room.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Thêm Phòng Hát Mới</h1>
+    </header>
+
+    <form th:action="@{/add-room}" method="post" class="add-room-form">
+        <div class="form-group">
+            <label for="name">Tên Phòng:</label>
+            <input type="text" id="name" name="name" placeholder="Nhập tên phòng" required />
+        </div>
+
+        <div class="form-group">
+            <label for="type">Loại Phòng:</label>
+            <select id="type" name="type" required>
+                <option value="L">Lớn</option>
+                <option value="M">Thường</option>
+                <option value="S">Nhỏ</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Giá ($/h):</label>
+            <input type="number" id="price" name="price" placeholder="Nhập giá phòng" required />
+        </div>
+
+        <div class="form-group">
+            <label for="max-attendant">Số phục vụ tối đa:</label>
+            <input type="number" id="max-attendant" name="maxAttendant" placeholder="Nhập số phục vụ tối đa" required />
+        </div>
+
+        <div class="form-group">
+            <label for="note">Ghi Chú:</label>
+            <textarea id="note" name="note" placeholder="Nhập ghi chú phòng" rows="4"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Lưu</button>
+            <a th:href="@{/manage-room?back=true}">
+                <button type="button" class="btn">Quay Lại</button>
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

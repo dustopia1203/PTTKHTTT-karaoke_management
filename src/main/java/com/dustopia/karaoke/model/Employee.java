@@ -27,4 +27,16 @@ public class Employee {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "salary", nullable = false)
+    private Float salary;
+
 }

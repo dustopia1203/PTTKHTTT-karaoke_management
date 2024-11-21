@@ -24,4 +24,22 @@ public class Room {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    @Column(name = "price", nullable = false)
+    private Float price;
+
+    @Column(name = "status", nullable = false)
+    private Integer status = 0;
+
+    @Column(name = "max_attendant", nullable = false)
+    private Integer maxAttendant;
+
+    @Column(name = "note")
+    private String note;
+
 }

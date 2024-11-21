@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Home</title>
+    <link rel="stylesheet" th:href="@{/css/manager_home.css}">
+</head>
+
+<body>
+<header class="header">
+    <h1 th:text="'Xin chào, quản lý ' + ${manager.getName()}"></h1>
+    <a th:href="@{/login}">
+        <button class="logout-btn">Đăng xuất</button>
+    </a>
+</header>
+
+<div class="options-container">
+    <div class="option" >
+        <a th:href="@{/manage-room}">
+            <h2>Quản lý phòng hát</h2>
+            <p>Xem và quản lý danh sách phòng hát</p>
+        </a>
+    </div>
+    <div class="option" >
+        <a th:href="@{/assign-attendant}">
+            <h2>Phân công phục vụ</h2>
+            <p>Quản lý và phân công nhân viên phục vụ</p>
+        </a>
+    </div>
+    <div class="option">
+        <a th:href="@{/view-attendant-stat}">
+            <h2>Thống kê phục vụ</h2>
+            <p>Xem báo cáo và thống kê phục vụ</p>
+        </a>
+    </div>
+</div>
+</body>
+
+</html>
