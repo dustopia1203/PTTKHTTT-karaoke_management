@@ -4,38 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager Home</title>
+    <title>Trang chủ quản lý</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/manager_home.css}">
 </head>
 
 <body>
-<header class="header">
-    <h1 th:text="'Xin chào, quản lý ' + ${manager.getName()}"></h1>
-    <a th:href="@{/login}">
-        <button class="logout-btn">Đăng xuất</button>
-    </a>
-</header>
 
-<div class="options-container">
-    <div class="option" >
-        <a th:href="@{/manage-room}">
-            <h2>Quản lý phòng hát</h2>
-            <p>Xem và quản lý danh sách phòng hát</p>
-        </a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/manager_home}">Hệ quản trị Karaoke</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="navbar-text text-white ms-auto">
+                    Xin chào, <strong><div th:value="${manager.getName()}"></div></strong>
+                </span>
+        </div>
     </div>
-    <div class="option" >
-        <a th:href="@{/assign-attendant}">
-            <h2>Phân công phục vụ</h2>
-            <p>Quản lý và phân công nhân viên phục vụ</p>
-        </a>
-    </div>
-    <div class="option">
-        <a th:href="@{/view-attendant-stat}">
-            <h2>Thống kê phục vụ</h2>
-            <p>Xem báo cáo và thống kê phục vụ</p>
-        </a>
-    </div>
+</nav>
+
+<div class="container content">
+    <section id="manage-room">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Quản lý thông tin phòng hát
+            </div>
+            <div class="card-body">
+                <p>Quản lý thông tin phòng: xem, thêm, sửa, xóa thông tin phòng</p>
+                <a th:href="@{/manage-room}" class="btn btn-primary">Đi đến Quản lý thông tin phòng hát</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="assign-attendant">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                Phân công nhân viên phục vụ
+            </div>
+            <div class="card-body">
+                <p>Phân công phục vụ phòng dựa trên đặt phòng của khách và tình trạng nhân viên</p>
+                <a th:href="@{/assign-attendant}" class="btn btn-success">Đi đến Phân công nhân viên phục vụ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-stats">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                Xem thống kê giờ phục vụ cua nhân viên
+            </div>
+            <div class="card-body">
+                <p>Xem các thông tin thống kê số giwof phục vụ trong tháng của nhân viên phục vụ</p>
+                <a th:href="@{/view-attendant-stat}" class="btn btn-info">Đi đến Xem thống kê giờ phục vụ cua nhân viên</a>
+            </div>
+        </div>
+    </section>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
