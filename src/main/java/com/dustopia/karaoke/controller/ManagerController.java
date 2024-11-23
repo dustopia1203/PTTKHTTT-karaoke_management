@@ -1,6 +1,5 @@
 package com.dustopia.karaoke.controller;
 
-import com.dustopia.karaoke.common.aop.Auth;
 import com.dustopia.karaoke.model.BookedRoom;
 import com.dustopia.karaoke.model.Booking;
 import com.dustopia.karaoke.model.Manager;
@@ -29,21 +28,26 @@ public class ManagerController {
     private final BookingService bookingService;
 
     @GetMapping("/manager-home")
-    @Auth
     public ModelAndView managerHome(HttpSession session) {
         Manager manager = (Manager) session.getAttribute("manager");
+        if (Objects.isNull(manager)) {
+            return new ModelAndView("redirect:/login");
+        }
         ModelAndView view = new ModelAndView("manager_home");
         view.addObject("manager", manager);
         return view;
     }
 
     @GetMapping("/manage-room")
-    @Auth
     public ModelAndView manageRoom(
             @RequestParam(required = false) boolean back,
             @RequestParam(required = false) boolean add,
             HttpSession session
     ) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        if (Objects.isNull(manager)) {
+            return new ModelAndView("redirect:/login");
+        }
         ModelAndView view = new ModelAndView("manage_room");
         List<Room> rooms;
         if (back) {
@@ -61,8 +65,11 @@ public class ManagerController {
     }
 
     @GetMapping("/add-room")
-    @Auth
-    public ModelAndView addRoom() {
+    public ModelAndView addRoom(HttpSession session) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        if (Objects.isNull(manager)) {
+            return new ModelAndView("redirect:/login");
+        }
         return new ModelAndView("add_room");
     }
 
