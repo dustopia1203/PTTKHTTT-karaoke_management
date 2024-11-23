@@ -49,6 +49,7 @@ public class ManagerController {
             return new ModelAndView("redirect:/login");
         }
         ModelAndView view = new ModelAndView("manage_room");
+        view.addObject("manager", manager);
         List<Room> rooms;
         if (back) {
             rooms = (List<Room>) session.getAttribute("rooms");

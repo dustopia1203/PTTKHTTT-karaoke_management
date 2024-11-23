@@ -1,27 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý phòng hát</title>
-    <link rel="stylesheet" th:href="@{/css/manage_room.css}">
-</head>
-<body>
-<div class="container">
-    <header>
-        <h1>Quản lý phòng hát</h1>
-        <div class="summary">
-            <span>Tổng số phòng hát: <strong th:text="${rooms.size()}"></strong></span>
-        </div>
-    </header>
 
-    <table class="room-table">
-        <thead>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Room</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/manage_room.css}" />
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/manager_home}">Hệ quản trị Karaoke</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="navbar-text text-white ms-auto">
+                    Xin chào, <strong th:text="${manager.getName()}"></strong>
+                </span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+
+    <h4 class="text-start mb-3">
+        Tổng số phòng: <span id="total-rooms">1</span>
+    </h4>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
         <tr>
-            <th>STT</th>
-            <th>ID</th>
-            <th>Tên</th>
-            <th>Loại</th>
+            <th class="fit">STT</th>
+            <th>Tên phòng</th>
+            <th>Loại phòng</th>
             <th>Giá ($/h)</th>
             <th>Số phục vụ tối đa</th>
             <th>Ghi chú</th>
@@ -29,31 +48,42 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Lặp qua danh sách phòng -->
-        <tr th:each="room, iterStat : ${rooms}">
+        <tr th:each="room, iterStat: ${rooms}">
             <td th:text="${iterStat.index + 1}"></td>
-            <td th:text="${room.getId()}"></td>
             <td th:text="${room.getName()}"></td>
-            <td th:text="${room.getType}"></td>
+            <td th:text="${room.getType()}"></td>
             <td th:text="${room.getPrice()}"></td>
             <td th:text="${room.getMaxAttendant()}"></td>
             <td th:text="${room.getNote()}"></td>
-            <td>
-                <button class="btn edit">Sửa</button>
-                <button class="btn delete">Xóa</button>
+            <td class="fit">
+                <a class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i>
+                    Chỉnh sửa
+                </a>
+                <a class="btn btn-danger btn-sm"
+                ><i class="fas fa-trash-alt"></i>
+                    Xóa
+                </a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <div class="actions">
-        <a th:href="@{/manager-home?back=true}">
-            <button class="btn" id="back">Quay lại</button>
+    <div class="table-actions">
+        <a th:href="@{/manager-home}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Trở về
         </a>
-        <a th:href="@{/add-room}">
-            <button class="btn" id="add-room">Thêm phòng hát</button>
+        <a th:href="@{/add-room}" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Thêm phòng
         </a>
     </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>
