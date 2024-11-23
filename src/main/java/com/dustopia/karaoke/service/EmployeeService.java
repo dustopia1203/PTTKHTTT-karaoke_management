@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EmployeeService {
 
-    boolean checkLogin(Employee employee);
+    Employee checkLogin(Employee employee);
 
 }

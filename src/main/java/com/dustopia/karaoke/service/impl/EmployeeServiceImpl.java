@@ -16,17 +16,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public boolean checkLogin(Employee employee) {
+    public Employee checkLogin(Employee employee) {
         Optional<Employee> employeeOptional = employeeRepository.findByUsername(employee.getUsername());
-        if (employeeOptional.isEmpty()) {
-            throw new RuntimeException("Invalid credentials");
+        if (employeeOptional.isEmpty() || !Objects.equals(employee.getPassword(), employeeOptional.get().getPassword())) {
+            return null;
         }
-        if (!Objects.equals(employee.getPassword(), employeeOptional.get().getPassword())) {
-            return false;
-        }
-        employee.setId(employeeOptional.get().getId());
-        employee.setName(employeeOptional.get().getName());
-        return true;
+        return employeeOptional.get();
     }
 
 }

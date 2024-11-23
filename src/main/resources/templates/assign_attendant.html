@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Công Phục Vụ</title>
+    <link rel="stylesheet" th:href="@{/css/assign_attendant.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Danh Sách Phân Công Phục Vụ</h1>
+    </header>
+    <table>
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Phòng</th>
+            <th>Thời gian nhận phòng</th>
+            <th>Số phục vụ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="room, iterStat : ${rooms}" th:onclick="|/assign-attendant/${room.id}|">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${room.name}"></td>
+            <td th:text="${room.checkInTime}"></td>
+            <td th:text="${room.servingStaffCount}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="form-actions">
+        <a th:href="@{/manager-home}"><button type="button" class="btn">Quay Lại</button></a>
+    </div>
+</div>
+</body>
+</html>
