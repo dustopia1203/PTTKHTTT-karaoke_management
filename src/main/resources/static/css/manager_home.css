@@ -1,7 +1,18 @@
-.content {
-    padding: 2rem;
+.container {
+    margin-top: 50px;
+    width: 50vw;
 }
 
-.card {
-    margin-top: 1rem;
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-link .card {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.card-link .card:hover {
+    transform: scale(1.02);
 }

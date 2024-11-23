@@ -1,54 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Phòng Hát</title>
-    <link rel="stylesheet" th:href="@{/css/add_room.css}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thêm phòng hát mới</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/add_room.css}" />
 </head>
 <body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/manager_home}">Hệ quản trị Karaoke</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="navbar-text text-white ms-auto">
+                    Xin chào, <strong th:text="${manager.getName()}"></strong>
+                </span>
+            </div>
+        </div>
+    </nav>
+</header>
+
 <div class="container">
-    <header>
-        <h1>Thêm Phòng Hát Mới</h1>
-    </header>
-
-    <form th:action="@{/add-room}" method="post" class="add-room-form">
-        <div class="form-group">
-            <label for="name">Tên Phòng:</label>
-            <input type="text" id="name" name="name" placeholder="Nhập tên phòng" required />
+    <form th:action="@{/add-room}" method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên phòng</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    placeholder="Nhập tên phòng"
+                    required
+            />
         </div>
-
-        <div class="form-group">
-            <label for="type">Loại Phòng:</label>
-            <select id="type" name="type" required>
-                <option value="L">Lớn</option>
-                <option value="M">Thường</option>
-                <option value="S">Nhỏ</option>
-            </select>
+        <div class="mb-3">
+            <label for="type" class="form-label">Loại phòng</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="type"
+                    name="type"
+                    placeholder="Nhập loại phòng"
+                    required
+            />
         </div>
-
-        <div class="form-group">
-            <label for="price">Giá ($/h):</label>
-            <input type="number" id="price" name="price" placeholder="Nhập giá phòng" required />
+        <div class="mb-3">
+            <label for="price" class="form-label">Giá phòng ($/h)</label>
+            <input
+                    type="number"
+                    class="form-control"
+                    id="price"
+                    name="price"
+                    placeholder="Nhập giá phòng ($/h)"
+                    required
+            />
         </div>
-
-        <div class="form-group">
-            <label for="max-attendant">Số phục vụ tối đa:</label>
-            <input type="number" id="max-attendant" name="maxAttendant" placeholder="Nhập số phục vụ tối đa" required />
+        <div class="mb-3">
+            <label for="maxAttendant" class="form-label">Số phục vụ tối đa</label>
+            <input
+                    type="number"
+                    class="form-control"
+                    id="maxAttendant"
+                    name="maxAttendant"
+                    placeholder="Nhập số phục vụ tối đa"
+                    required
+            />
         </div>
-
-        <div class="form-group">
-            <label for="note">Ghi Chú:</label>
-            <textarea id="note" name="note" placeholder="Nhập ghi chú phòng" rows="4"></textarea>
+        <div class="mb-3">
+            <label for="note" class="form-label">Ghi chú</label>
+            <textarea
+                    class="form-control"
+                    id="note"
+                    rows="3"
+                    name="note"
+                    placeholder="Nhập ghi chú"
+            ></textarea>
         </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn">Lưu</button>
-            <a th:href="@{/manage-room?back=true}">
-                <button type="button" class="btn">Quay Lại</button>
+        <div class="d-flex justify-content-between mt-3">
+            <a href="/manager-home" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Trở về
             </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Lưu
+            </button>
         </div>
     </form>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

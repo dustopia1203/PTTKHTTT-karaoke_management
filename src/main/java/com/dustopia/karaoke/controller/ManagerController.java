@@ -10,6 +10,7 @@ import com.dustopia.karaoke.service.impl.RoomServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +43,7 @@ public class ManagerController {
     public ModelAndView manageRoom(
             @RequestParam(required = false) boolean back,
             @RequestParam(required = false) boolean add,
+            @RequestParam(required = false) boolean error,
             HttpSession session
     ) {
         Manager manager = (Manager) session.getAttribute("manager");
@@ -57,6 +59,9 @@ public class ManagerController {
             Room room = (Room) session.getAttribute("newRoom");
             rooms = (List<Room>) session.getAttribute("rooms");
             rooms.add(room);
+        } else if (error) {
+            view.addObject("error", true);
+            rooms = (List<Room>) session.getAttribute("rooms");
         } else {
             rooms = roomService.getAllRooms();
         }
@@ -71,7 +76,9 @@ public class ManagerController {
         if (Objects.isNull(manager)) {
             return new ModelAndView("redirect:/login");
         }
-        return new ModelAndView("add_room");
+        ModelAndView view = new ModelAndView("add_room");
+        view.addObject("manager", manager);
+        return view;
     }
 
     @PostMapping("/add-room")
@@ -79,10 +86,14 @@ public class ManagerController {
             @ModelAttribute Room room,
             HttpSession session
     ) {
-        ModelAndView view = new ModelAndView("redirect:/manage-room?add=true");
-        roomService.addRoom(room);
-        session.setAttribute("newRoom", room);
-        return view;
+        try {
+            ModelAndView view = new ModelAndView("redirect:/manage-room?add=true");
+            roomService.addRoom(room);
+            session.setAttribute("newRoom", room);
+            return view;
+        } catch (Exception e) {
+            return new ModelAndView("redirect:/manage-room?error=true");
+        }
     }
 
     @GetMapping("/assign-attendant")

@@ -22,20 +22,19 @@ public class EmployeeController {
 
     @GetMapping("/login")
     public ModelAndView login(
-            @RequestParam(required = false) boolean back,
+            @RequestParam(required = false) boolean error,
             HttpSession session
     ) {
         ModelAndView view = new ModelAndView("login");
         Employee employee;
-        if (back) {
+        if (error) {
             employee = Employee.builder()
                     .username((String) session.getAttribute("username"))
                     .password((String) session.getAttribute("password"))
                     .build();
-            view.addObject("back", true);
+            view.addObject("error", true);
         } else {
             employee = new Employee();
-            view.addObject("back", false);
         }
         view.addObject("employee", employee);
         return view;

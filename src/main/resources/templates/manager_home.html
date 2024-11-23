@@ -14,7 +14,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/manager_home}">Hệ quản trị Karaoke</a>
+            <a class="navbar-brand" th:href="@{/manager-home}">Hệ quản trị Karaoke</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,39 +30,46 @@
 
 <div class="container content">
     <section id="manage-room">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                Quản lý thông tin phòng hát
+        <a th:href="@{/manage-room}" class="card-link">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Quản lý thông tin phòng hát
+                </div>
+                <div class="card-body">
+                    <p>Quản lý thông tin phòng: xem, thêm, sửa, xóa thông tin phòng</p>
+                </div>
             </div>
-            <div class="card-body">
-                <p>Quản lý thông tin phòng: xem, thêm, sửa, xóa thông tin phòng</p>
-                <a th:href="@{/manage-room}" class="btn btn-primary">Đi đến Quản lý thông tin phòng hát</a>
-            </div>
-        </div>
+        </a>
     </section>
+
+    <div class="my-5"></div>
 
     <section id="assign-attendant">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                Phân công nhân viên phục vụ
+        <a th:href="@{/assign-attendant}" class="card-link">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    Phân công nhân viên phục vụ
+                </div>
+                <div class="card-body">
+                    <p>Phân công phục vụ phòng dựa trên đặt phòng của khách và tình trạng nhân viên</p>
+                </div>
             </div>
-            <div class="card-body">
-                <p>Phân công phục vụ phòng dựa trên đặt phòng của khách và tình trạng nhân viên</p>
-                <a th:href="@{/assign-attendant}" class="btn btn-success">Đi đến Phân công nhân viên phục vụ</a>
-            </div>
-        </div>
+        </a>
     </section>
 
+    <div class="my-5"></div>
+
     <section id="view-stats">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                Xem thống kê giờ phục vụ cua nhân viên
+        <a th:href="@{/view-attendant-stat}" class="card-link">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    Xem thống kê giờ phục vụ cua nhân viên
+                </div>
+                <div class="card-body">
+                    <p>Xem các thông tin thống kê số giờ phục vụ trong tháng của nhân viên phục vụ</p>
+                </div>
             </div>
-            <div class="card-body">
-                <p>Xem các thông tin thống kê số giwof phục vụ trong tháng của nhân viên phục vụ</p>
-                <a th:href="@{/view-attendant-stat}" class="btn btn-info">Đi đến Xem thống kê giờ phục vụ cua nhân viên</a>
-            </div>
-        </div>
+        </a>
     </section>
 
 </div>

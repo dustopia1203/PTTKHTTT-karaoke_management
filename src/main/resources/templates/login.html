@@ -32,10 +32,9 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     document.addEventListener('DOMContentLoaded', function () {
-        const back = [[${back}]];
-        console.log(back);
-        if (back) {
-            window.alert('Sai thông tin đăng nhập, vui lòng thử lại')
+        const error = [[${error}]];
+        if (error) {
+            window.alert('Sai thông tin đăng nhập, vui lòng thử lại!')
         }
     });
     /*]]>*/
