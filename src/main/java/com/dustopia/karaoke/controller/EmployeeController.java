@@ -54,7 +54,7 @@ public class EmployeeController {
             session.setAttribute("manager", manager);
             return new ModelAndView("redirect:/manager-home");
         }
-        return new ModelAndView("redirect:/login?back=true");
+        return new ModelAndView("redirect:/login?error=true");
     }
 
 }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Attendant Info</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/attendant_detail.css}"/>
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/manager-home}">Hệ quản trị Karaoke</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="navbar-text text-white ms-auto">
+                    Xin chào, <strong th:text="${manager.getName()}"></strong>
+                </span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+
+    <h4>Thông tin phục vụ</h4>
+
+    <div class="my-3">
+        <p>ID phục vụ: <span id="attendant-id" th:text="${attendant.getId()}"></span></p>
+        <p>Tên phục vụ: <span id="attendant-name" th:text="${attendant.getName()}"></span></p>
+        <p>Lương cơ bản: <span id="total-serving-time" th:text="${attendant.getSalary()}"></span></p>
+    </div>
+
+    <form action="#" th:action="@{'/attendant-detail/' + ${attendant.id}}" method="GET" class="mb-3">
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input
+                        type="date"
+                        class="form-control"
+                        id="startDate"
+                        name="startDate"
+                />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input
+                        type="date"
+                        class="form-control"
+                        id="endDate"
+                        name="endDate"
+                />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+
+    </form>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="thead-light">
+        <tr>
+            <th class="fit">ST</th>
+            <th>Phòng phục vụ</th>
+            <th>Thời gian bắt đầu</th>
+            <th>Thời gian kết thúc</th>
+            <th>Ghi chú</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="servingShift, iterStat : ${servingShifts}"
+            th:onclick="'window.location.href=\'/serving-shift-detail/' + ${servingShift.getId()} + '\';'"
+            class="table-row">
+            <td th:text="${iterStat.index}"></td>
+            <td th:text="${servingShift.getBookedRoom().getRoom().getName()}"></td>
+            <td th:text="${servingShift.getStartTime()}"></td>
+            <td th:text="${servingShift.getBookedRoom().getReturnTime()}"></td>
+            <td th:text="${servingShift.getNote()}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <div class="d-flex justify-content-between mt-3">
+        <a th:href="@{/view-stat-attendant?back=true}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
