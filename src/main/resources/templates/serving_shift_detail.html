@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết ca phục vụ</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/serving_shift_detail.css}" />
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/manager-home}">Hệ quản trị Karaoke</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="navbar-text text-white ms-auto">
+                    Xin chào, <strong th:text="${manager.getName()}"></strong>
+                </span>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div id="booked-room-detail" th:object="${bookedRoom}">
+        <div class="section-title">
+            <h4>Thông tin phòng đặt</h4>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Tên phòng:</span>
+            <span id="roomName" th:text="*{room.name}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Loại phòng:</span>
+            <span id="roomType" th:text="*{room.type}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Giá phòng ($/h):</span>
+            <span id="roomPrice" th:text="*{room.price}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Số lượng phục vụ tối đa</span>
+            <span id="maxAttendant"  th:text="*{room.maxAttendant}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Thời gian đặt phòng:</span>
+            <span id="bookingTime" th:text="*{booking.bookingTime}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Ghi chú:</span>
+            <span id="roomNote" th:text="*{note}"></span>
+        </div>
+    </div>
+
+    <div id="client-detail" th:object="${client}">
+        <div class="section-title">
+            <h4>Thông tin khách hàng</h4>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Tên:</span>
+            <span id="clientName" th:text="*{name}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Địa chỉ:</span>
+            <span id="clientAddress" th:text="*{address}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Số diện thoại:</span>
+            <span id="clientTel" th:text="*{tel}"></span>
+        </div>
+    </div>
+
+    <div id="attendant-id" th:object="${attendant}">
+        <div class="section-title">
+            <h4>Thông tin phục vụ</h4>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Tên:</span>
+            <span id="attendantName" th:text="*{name}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Lương cơ bản:</span>
+            <span id="attendantSalary" th:text="*{salary}"></span>
+        </div>
+    </div>
+
+    <div id="manager-detail" th:object="${assignedManager}">
+        <div class="section-title">
+            <h4>Thông tin quản lý phân công</h4>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Tên:</span>
+            <span id="managerName" th:text="*{name}"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-title">Lương cơ bản:</span>
+            <span id="managerSalary" th:text="*{salary}"></span>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3">
+        <a th:href="@{'/attendant-detail/' + ${attendant.id} + '?back=true'}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Quay lại
+        </a>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

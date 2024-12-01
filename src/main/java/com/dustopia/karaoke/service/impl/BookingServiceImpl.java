@@ -1,6 +1,7 @@
 package com.dustopia.karaoke.service.impl;
 
 import com.dustopia.karaoke.model.Booking;
+import com.dustopia.karaoke.model.ServingShift;
 import com.dustopia.karaoke.repository.BookingRepository;
 import com.dustopia.karaoke.service.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,11 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void updateBooking(Booking booking) {
 
+    }
+
+    @Override
+    public List<Booking> getAllBookingsByServingShift(ServingShift servingShift) {
+        return bookingRepository.findAllByServingShift(servingShift);
     }
 
 }
