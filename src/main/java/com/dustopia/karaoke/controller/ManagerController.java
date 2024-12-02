@@ -3,6 +3,7 @@ package com.dustopia.karaoke.controller;
 import com.dustopia.karaoke.model.Attendant;
 import com.dustopia.karaoke.model.AttendantStat;
 import com.dustopia.karaoke.model.BookedRoom;
+import com.dustopia.karaoke.model.Booking;
 import com.dustopia.karaoke.model.Client;
 import com.dustopia.karaoke.model.Manager;
 import com.dustopia.karaoke.model.Room;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -196,11 +199,94 @@ public class ManagerController {
                 .orElse(null);
         BookedRoom bookedRoom = Objects.nonNull(servingShift) ? servingShift.getBookedRoom() : null;
         Client client = Objects.nonNull(bookedRoom) ? bookedRoom.getBooking().getClient() : null;
-        Manager assignedManager =  Objects.nonNull(bookedRoom) ? bookedRoom.getBooking().getManager() : null;
+        Manager assignedManager = Objects.nonNull(bookedRoom) ? bookedRoom.getBooking().getManager() : null;
         view.addObject("bookedRoom", bookedRoom);
         view.addObject("client", client);
         view.addObject("attendant", attendant);
         view.addObject("assignedManager", assignedManager);
+        return view;
+    }
+
+    @GetMapping("/assign-attendant")
+    public ModelAndView assignAttendant(
+            @RequestParam(required = false) boolean back,
+            HttpSession session
+    ) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        if (Objects.isNull(manager)) {
+            return new ModelAndView("redirect:/login");
+        }
+        ModelAndView view = new ModelAndView("assign_attendant");
+        view.addObject("manager", manager);
+        List<BookedRoom> bookedRooms;
+        if (back) {
+            bookedRooms = (List<BookedRoom>) session.getAttribute("bookedRooms");
+        } else {
+            List<Booking> bookings = bookingService.getAllUncheckoutBookings();
+            bookedRooms = bookings.stream()
+                    .flatMap(booking -> booking.getBookedRooms().stream())
+                    .sorted(Comparator.comparing(BookedRoom::getReturnTime, Comparator.reverseOrder()))
+                    .toList();
+            session.setAttribute("bookedRooms", bookedRooms);
+        }
+        view.addObject("bookedRooms", bookedRooms);
+        return view;
+    }
+
+    @GetMapping("/select-attendant/{bookedRoomId}")
+    public ModelAndView selectAttendant(
+            @PathVariable int bookedRoomId,
+            @RequestParam(required = false) boolean back,
+            HttpSession session
+    ) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        if (Objects.isNull(manager)) {
+            return new ModelAndView("redirect:/login");
+        }
+        ModelAndView view = new ModelAndView("select_attendant");
+        view.addObject("manager", manager);
+        BookedRoom bookedRoom;
+        List<Attendant> attendants;
+        if (back) {
+            bookedRoom = (BookedRoom) session.getAttribute("bookedRoom");
+            attendants = (List<Attendant>) session.getAttribute("attendants");
+        } else {
+            List<BookedRoom> bookedRooms = (List<BookedRoom>) session.getAttribute("bookedRooms");
+            bookedRoom = bookedRooms.stream()
+                    .filter(item -> Objects.equals(item.getId(), bookedRoomId))
+                    .findFirst()
+                    .orElse(null);
+            attendants = attendantService.getAllAvailableAttendants();
+            attendants.forEach(attendant -> {
+                List<LocalDateTime> ssBrLst = attendant.getServingShifts().stream()
+                        .map(ServingShift::getBookedRoom)
+                        .filter(Objects::nonNull)
+                        .map(BookedRoom::getReturnTime)
+                        .filter(Objects::nonNull)
+                        .sorted(Comparator.reverseOrder())
+                        .toList();
+                if (ssBrLst.isEmpty()) {
+                    attendant.setLastServingTime(null);
+                } else {
+                    attendant.setLastServingTime(ssBrLst.get(0));
+                }
+            });
+            attendants.sort((a1, a2) -> {
+                if (Objects.equals(a1.getLastServingTime(), a2.getLastServingTime())) {
+                    return Integer.compare(a1.getId(), a2.getId());
+                }
+                if (Objects.isNull(a1.getLastServingTime())) {
+                    return -1;
+                } else if (Objects.isNull(a2.getLastServingTime())) {
+                    return 1;
+                }
+                return a1.getLastServingTime().compareTo(a2.getLastServingTime());
+            });
+            session.setAttribute("bookedRoom", bookedRoom);
+            session.setAttribute("attendants", attendants);
+        }
+        view.addObject("bookedRoom", bookedRoom);
+        view.addObject("attendants", attendants);
         return view;
     }
 
