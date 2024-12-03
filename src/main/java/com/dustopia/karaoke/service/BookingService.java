@@ -13,6 +13,4 @@ public interface BookingService {
 
     void updateBooking(Booking booking);
 
-    List<Booking> getAllBookingsByServingShift(ServingShift servingShift);
-
 }

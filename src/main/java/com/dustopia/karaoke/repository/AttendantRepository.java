@@ -16,7 +16,7 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
             "       e.name,\n" +
             "       e.salary,\n" +
             "       a.available,\n" +
-            "       COALESCE(SUM(TIMESTAMPDIFF(HOUR, ss.start_time, br.return_time)), 0) AS totalServingTime,\n" +
+            "       COALESCE(SUM(TIMESTAMPDIFF(MINUTE, ss.start_time, br.return_time)), 0) AS totalServingTime,\n" +
             "       GROUP_CONCAT(DISTINCT ss.note SEPARATOR ', ') AS note\n" +
             "FROM tbl_attendant a\n" +
             "         JOIN tbl_employee e ON a.id = e.id\n" +

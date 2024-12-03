@@ -1,37 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân Công Phục Vụ</title>
-    <link rel="stylesheet" th:href="@{/css/assign_attendant.css}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Phân công phục vụ</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/assign_attendant.css}"/>
 </head>
+
 <body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/manager-home}">Hệ quản trị Karaoke</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="navbar-text text-white ms-auto">
+                    Xin chào, <strong th:text="${manager.getName()}"></strong>
+                </span>
+            </div>
+        </div>
+    </nav>
+</header>
+
 <div class="container">
-    <header>
-        <h1>Danh Sách Phân Công Phục Vụ</h1>
-    </header>
-    <table>
-        <thead>
+    <table class="table table-bordered table-hover">
+
+        <thead class="thead-light">
         <tr>
-            <th>STT</th>
-            <th>Phòng</th>
-            <th>Thời gian nhận phòng</th>
-            <th>Số phục vụ</th>
+            <th class="fit">STT</th>
+            <th>Phòng đặt</th>
+            <th>Thời gian đặt phòng</th>
+            <th class="fit">Số lượng phục vụ hiện tại</th>
         </tr>
         </thead>
+
         <tbody>
-        <tr th:each="room, iterStat : ${rooms}" th:onclick="|/assign-attendant/${room.id}|">
+        <tr th:each="bookedRoom, iterStat : ${bookedRooms}"
+            th:onclick="'window.location.href=\'/select-attendant/' + ${bookedRoom.getId()} + '\';'"
+            class="table-row">
             <td th:text="${iterStat.index + 1}"></td>
-            <td th:text="${room.name}"></td>
-            <td th:text="${room.checkInTime}"></td>
-            <td th:text="${room.servingStaffCount}"></td>
+            <td th:text="${bookedRoom.getRoom().getName()}"></td>
+            <td th:text="${bookedRoom.getBooking().getBookingTime()}"></td>
+            <td th:text="${bookedRoom.getCurrentAttendant()} + '/' + ${bookedRoom.getRoom().getMaxAttendant()}"></td>
         </tr>
         </tbody>
+
     </table>
-    <div class="form-actions">
-        <a th:href="@{/manager-home}"><button type="button" class="btn">Quay Lại</button></a>
+
+    <div class="d-flex justify-content-start mt-3">
+        <a th:href="@{/manager-home}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
     </div>
+
 </div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function () {
+        const error = [[${error}]];
+        if (error) {
+            window.alert('Lỗi xảy ra khi phân công phục vụ, vui lòng thử lại!')
+        }
+    });
+    /*]]>*/
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>

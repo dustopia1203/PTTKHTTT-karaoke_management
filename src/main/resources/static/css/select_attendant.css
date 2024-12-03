@@ -1,0 +1,25 @@
+.container {
+    margin-top: 50px;
+}
+
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.detail-title {
+    font-weight: bold;
+    width: 150px;
+}
+
+.table th.fit,
+.table td.fit {
+    white-space: nowrap;
+    width: 1%;
+}

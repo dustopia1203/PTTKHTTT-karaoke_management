@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class AttendantStat extends Attendant {
 
-    private int totalServingTime;
+    private float totalServingTime;
 
     private String note;
 
