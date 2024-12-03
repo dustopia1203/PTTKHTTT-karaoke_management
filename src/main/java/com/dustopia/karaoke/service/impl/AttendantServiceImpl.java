@@ -19,4 +19,10 @@ public class AttendantServiceImpl implements AttendantService {
         return attendantRepository.findAllByAvailable(true);
     }
 
+    @Override
+    public void assignAttendants(List<Attendant> attendants) {
+        attendants.forEach(attendant -> attendant.setAvailable(false));
+        attendantRepository.saveAll(attendants);
+    }
+
 }

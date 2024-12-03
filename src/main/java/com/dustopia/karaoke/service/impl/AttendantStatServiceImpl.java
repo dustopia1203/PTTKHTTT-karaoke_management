@@ -36,7 +36,7 @@ public class AttendantStatServiceImpl implements AttendantStatService {
                         .name(query.getName())
                         .salary(query.getSalary())
                         .available(query.getAvailable())
-                        .totalServingTime(query.getTotalServingTime())
+                        .totalServingTime((float) query.getTotalServingTime() / 60)
                         .note(query.getNote())
                         .build())
                 .collect(Collectors.toList());

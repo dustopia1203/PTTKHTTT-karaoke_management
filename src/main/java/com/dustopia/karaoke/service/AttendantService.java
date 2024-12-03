@@ -10,4 +10,6 @@ public interface AttendantService {
 
     List<Attendant> getAllAvailableAttendants();
 
+    void assignAttendants(List<Attendant> attendants);
+
 }

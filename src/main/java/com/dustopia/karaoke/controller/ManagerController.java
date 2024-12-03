@@ -8,6 +8,7 @@ import com.dustopia.karaoke.model.Client;
 import com.dustopia.karaoke.model.Manager;
 import com.dustopia.karaoke.model.Room;
 import com.dustopia.karaoke.model.ServingShift;
+import com.dustopia.karaoke.model.form.NoteForm;
 import com.dustopia.karaoke.service.AttendantService;
 import com.dustopia.karaoke.service.AttendantStatService;
 import com.dustopia.karaoke.service.BookingService;
@@ -207,9 +208,12 @@ public class ManagerController {
         return view;
     }
 
+
+    // m2
     @GetMapping("/assign-attendant")
     public ModelAndView assignAttendant(
             @RequestParam(required = false) boolean back,
+            @RequestParam(required = false) boolean error,
             HttpSession session
     ) {
         Manager manager = (Manager) session.getAttribute("manager");
@@ -220,6 +224,9 @@ public class ManagerController {
         view.addObject("manager", manager);
         List<BookedRoom> bookedRooms;
         if (back) {
+            bookedRooms = (List<BookedRoom>) session.getAttribute("bookedRooms");
+        } else if (error) {
+            view.addObject("error", true);
             bookedRooms = (List<BookedRoom>) session.getAttribute("bookedRooms");
         } else {
             List<Booking> bookings = bookingService.getAllUncheckoutBookings();
@@ -288,6 +295,64 @@ public class ManagerController {
         view.addObject("bookedRoom", bookedRoom);
         view.addObject("attendants", attendants);
         return view;
+    }
+
+    @GetMapping("/confirm-attendant")
+    public ModelAndView confirmAttendant(
+            @RequestParam(name = "id") List<Integer> attendantIds,
+            HttpSession session
+    ) {
+        Manager manager = (Manager) session.getAttribute("manager");
+        if (Objects.isNull(manager)) {
+            return new ModelAndView("redirect:/login");
+        }
+        ModelAndView view = new ModelAndView("confirm_attendant");
+        view.addObject("manager", manager);
+        BookedRoom bookedRoom = (BookedRoom) session.getAttribute("bookedRoom");
+        if (attendantIds.size() + bookedRoom.getCurrentAttendant() > bookedRoom.getRoom().getMaxAttendant()) {
+            return new ModelAndView("redirect:/assign-attendant?error=true");
+        }
+        List<Attendant> attendants = (List<Attendant>) session.getAttribute("attendants");
+        List<Attendant> selectedAttendants = attendants.stream()
+                .filter(attendant -> attendantIds.contains(attendant.getId()))
+                .toList();
+        List<ServingShift> assignedServingShifts = selectedAttendants.stream()
+                .map(attendant -> ServingShift.builder()
+                        .attendant(attendant)
+                        .bookedRoom(bookedRoom)
+                        .build())
+                .toList();
+        session.setAttribute("assignedServingShifts", assignedServingShifts);
+        List<String> notes = assignedServingShifts.stream().map(shift -> "").toList();
+        NoteForm noteForm = new NoteForm(notes);
+        view.addObject("noteForm", noteForm);
+        view.addObject("bookedRoom", bookedRoom);
+        view.addObject("assignedServingShifts", assignedServingShifts);
+        return view;
+    }
+
+    @PostMapping("/confirm-attendant")
+    public ModelAndView doConfirmAttendant(
+            @ModelAttribute NoteForm noteForm,
+            HttpSession session
+    ) {
+        try {
+            List<String> notes = noteForm.getNotes();
+            List<ServingShift> assignedServingShifts = (List<ServingShift>) session.getAttribute("assignedServingShifts");
+            for (int i = 0; i < assignedServingShifts.size(); i++) {
+                assignedServingShifts.get(i).setNote(notes.get(i));
+            }
+            List<Attendant> attendants = assignedServingShifts.stream().map(ServingShift::getAttendant).toList();
+            attendantService.assignAttendants(attendants);
+            BookedRoom bookedRoom = (BookedRoom) session.getAttribute("bookedRoom");
+            bookedRoom.setServingShifts(assignedServingShifts);
+            bookedRoom.setCurrentAttendant(bookedRoom.getCurrentAttendant() + assignedServingShifts.size());
+            Booking booking = bookedRoom.getBooking();
+            bookingService.updateBooking(booking);
+            return new ModelAndView("redirect:/assign-attendant");
+        } catch (Exception e) {
+            return new ModelAndView("redirect:/assign-attendant?error=true");
+        }
     }
 
 }
